@@ -1,0 +1,30 @@
+{
+    "bridge": {
+        "name": "Homebridge",
+        "username": "CD:22:3D:E3:CE:30",
+        "port": 51826,
+        "pin": "031-45-156"
+    },
+    
+    "description": "Example configuration file for Apple Homebridge - OT-HOUSE",
+
+    "platforms": [],
+
+  "accessories": [
+        {
+  "accessory": "OT-SWITCH",
+"name": "room",
+"lightNum": "0"
+        },
+                {
+  "accessory": "OT-SWITCH",
+"name": "desk Lamp",
+"lightNum": "1"
+        },
+        {
+  "accessory": "OT-SWITCH",
+"name": "design",
+"lightNum": "2"
+        }
+    ] 
+}

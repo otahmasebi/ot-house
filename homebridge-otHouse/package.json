@@ -1,0 +1,58 @@
+{
+  "_from": "homebridge-switch",
+  "_id": "homebridge-switch@0.0.1",
+  "_inBundle": false,
+  "_integrity": "sha1-Fx1ENAuQSr0ImkxGiJb93iYJNhY=",
+  "_location": "/homebridge-switch",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "homebridge-switch",
+    "name": "homebridge-switch",
+    "escapedName": "homebridge-switch",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/homebridge-switch/-/homebridge-switch-0.0.1.tgz",
+  "_shasum": "171d44340b904abd089a4c468896fdde26093616",
+  "_spec": "homebridge-switch",
+  "_where": "/home/otahmasebi/.homebridge/plugins",
+  "author": {
+    "name": "Achim Pieters",
+    "email": "info@studiopieters.nl"
+  },
+  "bugs": {
+    "url": "https://github.com/AchimPieters/HomeBridge-Switch/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "sync-request": "^2.1.0",
+    "ws": "^5.1.1"
+  },
+  "deprecated": false,
+  "description": "Homebridge plugin to control a wall switch",
+  "engines": {
+    "homebridge": ">=0.2.0",
+    "node": ">=0.12.0"
+  },
+  "homepage": "https://github.com/AchimPieters/HomeBridge-Switch#readme",
+  "keywords": [
+    "homebridge-plugin"
+  ],
+  "license": "ISC",
+  "main": "index.js",
+  "name": "homebridge-switch",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/AchimPieters/HomeBridge-Switch.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.0.1"
+}
