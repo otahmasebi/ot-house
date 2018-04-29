@@ -32,8 +32,8 @@ ws.on('message', function ws_incoming(data) {
 if (data.charAt(0)=='#'){
 var relayNum = parseInt(data.substring(1,data.indexOf(',')));
 var relayVal = parseInt(data.substring(data.indexOf(',')+1));
-if (relayVal==0 && relayNum == that.lightNum) {that.state == false;}
-if (relayVal==1 && relayNum == that.lightNum) {that.state == true;}}
+if (relayVal==0 && relayNum == that.lightNum) {that.state = false;}
+if (relayVal==1 && relayNum == that.lightNum) {that.state = true;}}
 });
 ws.on('open', function open() {
 	that.log('websocket opened');
