@@ -1,5 +1,5 @@
 String webSite, javaScript,css;
-const int relays = 4;        // This sets the number of sliders you want
+const int relays = 3;        // This sets the number of sliders you want
 int relaysVal[relays];
 void buildCss(){
   css = "<style>\n";

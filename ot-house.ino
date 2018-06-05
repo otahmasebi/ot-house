@@ -7,18 +7,22 @@
 #include <ESP8266mDNS.h>
 
 
-//const char* ssid     = "MT";       // ERASE prior to publishing
-//const char* password = "harchiharchi";    //   "" ditto
-//const char* ssid     = "MT/iphone";       // ERASE prior to publishing
-//const char* password = "yektahaft";    //   "" ditto
-const char* ssid     = "Kharazmi University";       // ERASE prior to publishing
-const char* password = "";    //   "" ditto
+const char* ssid     = "MT";      
+const char* password = "harchiharchi";
+//const char* ssid     = "MT/iphone"; 
+//const char* password = "yektahaft"; 
+
 
 unsigned long previousMillis = 0;
 const long interval = 200;
 int clients=0;
 int LED = 2;                            // NodeMCU by LoLin
 int lastButtonState;
+
+#define relay1  D1
+#define relay2  D2
+#define input1  D3
+#define relay3  D8
 WiFiClient client;
 MDNSResponder mdns;
 
@@ -59,7 +63,6 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length
     case WStype_BIN:
       Serial.printf("[%u] get binary length: %u\r\n", num, length);
       hexdump(payload, length);
-
       // echo data back to browser
       webSocket.sendBIN(num, payload, length);
       break;
@@ -85,39 +88,41 @@ void handleNotFound()
 }
 
 void updateRelays(){
-    digitalWrite(D1, relaysVal[0]);
-    digitalWrite(D2, relaysVal[1]);
-    digitalWrite(D3, relaysVal[2]);
-    digitalWrite(D8, relaysVal[3]);
+  digitalWrite(relay1, relaysVal[0]);
+  digitalWrite(relay2, relaysVal[1]);
+  digitalWrite(input1, relaysVal[2]);
+  digitalWrite(relay3, relaysVal[3]);
 }
 void updatePages(){
-    for (int i=0;i<relays;i++){
-      char sendingString[5];
-     sprintf(sendingString, "#%d,%d", i,relaysVal[i]);
+  for (int i=0;i<relays;i++){
+    char sendingString[5];
+    sprintf(sendingString, "#%d,%d", i,relaysVal[i]);
     webSocket.broadcastTXT(sendingString,strlen(sendingString));
-    }
-    }
+  }
+}
 
 void setup() {
   pinMode(LED, OUTPUT);
-  pinMode(D2, OUTPUT);
-  pinMode(D1, OUTPUT);
-  pinMode(D3, INPUT_PULLUP);
-  lastButtonState = digitalRead(D3);
-  pinMode(D8, OUTPUT);
+  pinMode(relay1, OUTPUT);
+  pinMode(relay2, OUTPUT);
+  pinMode(input1, INPUT_PULLUP);
+  lastButtonState = digitalRead(input1);
+  pinMode(relay3, OUTPUT);
+
   Serial.begin(115200); delay(100);
-Serial.print("\n\nconnecting to ");
+  
+  Serial.print("\n\nconnecting to ");
   WiFi.begin(ssid, password);
   Serial.print(ssid);
   while (WiFi.status() != WL_CONNECTED){
     Serial.print(".");
     delay(500);
-}
+  }
   WiFi.mode(WIFI_STA);
-Serial.print("\n\nconnected to ");Serial.print(ssid);
-Serial.print("\nIpAddress: ");Serial.print(WiFi.localIP());
+  Serial.print("\n\nconnected to ");Serial.print(ssid);
+  Serial.print("\nIpAddress: ");Serial.print(WiFi.localIP());
 
-if (mdns.begin("ot", WiFi.localIP())) {
+  if (mdns.begin("ot", WiFi.localIP())) {
     Serial.println("MDNS responder started");
     mdns.addService("http", "tcp", 80);
     mdns.addService("ws", "tcp", 81);
@@ -128,28 +133,27 @@ if (mdns.begin("ot", WiFi.localIP())) {
   Serial.print("Connect to http://ot.local or http://");
   Serial.println(WiFi.localIP());
 
-
   server.on("/", handleWebsite);
-    server.onNotFound(handleNotFound);
+  server.onNotFound(handleNotFound);
   server.begin();
   webSocket.begin();
   webSocket.onEvent(webSocketEvent);  
 }
 
 void loop() {
-    unsigned long currentMillis = millis();
-  if(currentMillis - previousMillis >= interval) {
+  unsigned long currentMillis = millis();
+  if(currentMillis - previousMillis >= interval){
     if(clients >= 1){
-updatePages();
+      updatePages();
     }
     previousMillis = currentMillis;
   }
-  if(digitalRead(D3) == LOW && lastButtonState != LOW){
-        relaysVal[0] = (relaysVal[0] + 1)%2;
-        lastButtonState = digitalRead(D3);
-        updateRelays();
-  }else if(digitalRead(D3) == HIGH && lastButtonState != HIGH){
-    lastButtonState = digitalRead(D3);
+  if(digitalRead(input1) == LOW && lastButtonState != LOW){
+    relaysVal[0] = (relaysVal[0] + 1)%2;
+    lastButtonState = digitalRead(input1);
+    updateRelays();
+  }else if(digitalRead(input1) == HIGH && lastButtonState != HIGH){
+    lastButtonState = digitalRead(input1);
   }
   webSocket.loop();
   server.handleClient();
